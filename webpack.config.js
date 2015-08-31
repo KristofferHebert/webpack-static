@@ -5,25 +5,32 @@ var webpack = require('webpack')
 var path = require('path')
 
 module.exports = {
-    debug: true,
-    entry: {
-        main: './js/main.js'
-    },
+    entry: [
+        'babel/polyfill',
+        './src/js/main',
+        './src/css/main',
+        'webpack-dev-server/client?http://localhost:8080'
+    ],
     output: {
-        path: path.join(__dirname, 'public/'),
-        name: 'main.js'
+        path: '/',
+        publicPath: '/',
+        filename: 'main.min.js'
     },
+    devtool: 'source-map',
     modules: {
         loaders: [{
-            test: /\.es6.js$/,
-            loader: "babel-loader"
-        },
-        {
-            test: /\.scss$/,
-            loader: "css-loader!sass-loader"
-        },
+                test: /\.js$/,
+                include: path.join(__dirname, 'src'),
+                loader: 'babel-loader'
+            }, {
+                test: /\.scss$/,
+                loader: "style!css!autoprefixer!sass"
+            },
 
         ]
-    }
-
+    },
+    debug: true,
+    devServer: {
+       contentBase: "./src"
+     }
 }
